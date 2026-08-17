@@ -23,12 +23,26 @@
 ### 依赖
 
 - Python ≥ 3.10
-- `requests`
-- `pycryptodome`
+- `requests`、`pycryptodome`、`brotli`
 
 ```bash
 pip install -r requirements.txt
 ```
+
+> ⚠️ `brotli` 为**必要依赖**：`95598.csg.cn` 认证后的接口返回 Brotli 压缩响应，缺该库会报 `json.decoder.JSONDecodeError: Expecting value`。
+
+### 快速开始
+
+```bash
+git clone https://github.com/seagaruda/csg-monthly-bill.git
+cd csg-monthly-bill
+pip install -r requirements.txt
+
+# 在你自己的终端运行（手机号/验证码仅在本机输入，不经过任何第三方或 AI）
+python3 query_monthly_bill.py
+```
+
+首次运行会交互式登录（见下），登录态保存到本地 `session.json`，**之后查询无需再次登录**。
 
 ### 用法
 
@@ -51,6 +65,23 @@ export CSG_USERNAME=13800000000
 export CSG_PASSWORD=your_password
 python3 query_monthly_bill.py --fresh-login
 ```
+
+### 登录方式与隐私
+
+首次运行需登录「南网在线」，三种方式任选其一：
+
+| 方式 | 需输入 | 说明 |
+|------|--------|------|
+| 1 手机号+短信 | 手机号、短信验证码 | 最常用 |
+| 2 手机号+密码+短信 | 手机号、密码、短信验证码 | 密码+验证码双重 |
+| 3 扫码 | 无需输入任何信息 | 用南网 APP / 微信 / 支付宝扫码，**最省事且不暴露手机号** |
+
+**隐私边界（重要）**：
+
+- 请**在你自己的终端**运行本脚本。手机号、密码、验证码仅在本地终端由你本人输入，**不经过任何第三方服务或 AI 大模型**。
+- 若通过 AI agent 使用：让 AI 提供/克隆代码即可，但**登录这一步请自己在终端完成**，不要把手机号/验证码发给 AI。登录成功后把 `session.json` 留在本地，后续查询可交给 AI（只需只读的 token，且 token 可随时用 `--fresh-login` 失效重建）。
+- `session.json` 含登录 token，**仅存本地**，已被 `.gitignore` 排除，切勿提交或分享。
+- 推荐用**扫码登录**：全程无需输入手机号/验证码，隐私性最佳。
 
 ### 参数
 
@@ -109,12 +140,26 @@ Query **China Southern Power Grid (CSG)** residential electricity bills aggregat
 ### Requirements
 
 - Python ≥ 3.10
-- `requests`
-- `pycryptodome`
+- `requests`, `pycryptodome`, `brotli`
 
 ```bash
 pip install -r requirements.txt
 ```
+
+> ⚠️ `brotli` is **required**: authenticated endpoints from `95598.csg.cn` return Brotli-compressed responses; without it you'll get `json.decoder.JSONDecodeError: Expecting value`.
+
+### Quick Start
+
+```bash
+git clone https://github.com/seagaruda/csg-monthly-bill.git
+cd csg-monthly-bill
+pip install -r requirements.txt
+
+# Run in YOUR OWN terminal (phone/SMS code stay local, never sent to any third party or AI)
+python3 query_monthly_bill.py
+```
+
+The first run does an interactive login (see below); the session is saved to a local `session.json` and **no further login is needed** for subsequent queries.
 
 ### Usage
 
@@ -137,6 +182,23 @@ export CSG_USERNAME=13800000000
 export CSG_PASSWORD=your_password
 python3 query_monthly_bill.py --fresh-login
 ```
+
+### Login & Privacy
+
+The first run requires logging in to 「南网在线」. Pick one of three methods:
+
+| Method | Input needed | Notes |
+|--------|--------------|-------|
+| 1 Phone + SMS | phone number, SMS code | Most common |
+| 2 Phone + Password + SMS | phone, password, SMS code | Two-factor |
+| 3 QR scan | none | Scan with CSG app / WeChat / Alipay — **easiest, no phone number exposed** |
+
+**Privacy boundary (important)**:
+
+- Run the script **in your own terminal**. Phone number, password, and SMS code are typed only by you locally and **never pass through any third party or AI model**.
+- If using an AI agent: let the AI clone/provide the code, but **do the login step yourself in a terminal** — don't send your phone number / SMS code to the AI. After login, `session.json` stays local; subsequent queries can be handed to the AI (it only needs a read-only token, revocable anytime via `--fresh-login`).
+- `session.json` contains the login token, **stays local only**, excluded by `.gitignore` — never commit or share it.
+- **QR login** is recommended for best privacy: no phone number or SMS code typed at all.
 
 ### Options
 
