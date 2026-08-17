@@ -1,0 +1,26 @@
+# 登录态 / 凭证（含 token，切勿提交）
+session.json
+*.session.json
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+build/
+dist/
+
+# 输出
+*.csv
+*.log
+
+# 系统
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
